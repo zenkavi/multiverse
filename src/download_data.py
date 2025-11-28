@@ -102,14 +102,15 @@ def download_specific_files(ds, subject, data_specs):
         logger.info(f"Downloading {data_type} for subject {subject}")
 
         with log_operation(subject, data_type, "get") as log_file:
-            for pattern in file_patterns:
-                full_path = f"HCP1200/{subject}/unprocessed/3T/{pattern}"
-                try:
-                    logger.info(f"Getting: {full_path}")
-                    result = ds.get(full_path)
-                    logger.info(f"Successfully downloaded {full_path}")
-                except Exception as e:
-                    logger.error(f"Failed to download {full_path}: {e}")
+            # Download the entire directory for this data type
+            # DataLad doesn't handle wildcards well, so we download the whole directory
+            dir_path = f"HCP1200/{subject}/unprocessed/3T/{data_type}"
+            try:
+                logger.info(f"Getting: {dir_path}")
+                result = ds.get(dir_path)
+                logger.info(f"Successfully downloaded {dir_path}")
+            except Exception as e:
+                logger.error(f"Failed to download {dir_path}: {e}")
 
 
 def unlock_file(ds, file_path):
@@ -228,6 +229,41 @@ def organize_files(ds, subject, source_base, dest_base, task_runs):
                 logger.error(f"Failed to copy {source_structural} to {dest_structural}: {e}")
         else:
             logger.warning(f"Source file does not exist: {source_structural}")
+
+
+def remove_unwanted_directories(ds, subject, keep_patterns):
+    """
+    Remove unwanted directories from downloaded data using file system operations
+
+    Args:
+        ds: DataLad Dataset object
+        subject: Subject ID
+        keep_patterns: List of directory names to keep (e.g., ["T1w_MPR1", "tfMRI_MOTOR_LR"])
+    """
+    logger.info(f"Removing unwanted data for subject {subject}")
+
+    rm_paths = ["3T", "7T", "MEG"]
+
+    for rm_path in rm_paths:
+        subject_rm_path = Path(ds.path) / "HCP1200" / subject / "unprocessed" / rm_path
+
+        if subject_rm_path.exists():
+            all_dirs = [d for d in subject_rm_path.iterdir() if d.is_dir()]
+
+            for dir_path in all_dirs:
+                dir_name = dir_path.name
+
+                if dir_name not in keep_patterns:
+                    logger.info(f"Removing directory: {dir_path}")
+                    try:
+                        shutil.rmtree(dir_path)
+                        logger.info(f"Successfully removed {dir_name} for {subject}")
+                    except Exception as e:
+                        logger.error(f"Failed to remove {dir_name} for {subject}: {e}")
+                else:
+                    logger.info(f"Keeping directory: {dir_name} for {subject}")
+        else:
+            logger.warning(f"Subject rm directory not found: {subject_rm_path}")
 
 
 def cleanup_dataset_files(ds, subject, task_runs):
@@ -384,12 +420,18 @@ Examples:
     logger.info("Setting up HCP dataset")
     ds = setup_dataset(REPO_URL, LOCAL_DATASET_PATH)
 
+    # Build keep_patterns from data_specs (directories we actually want to keep)
+    keep_patterns = list(data_specs.keys())
+
     # Process each subject
     for subject in subject_list:
         logger.info(f"Processing subject {subject}")
 
         # Download specific files
         download_specific_files(ds, subject, data_specs)
+
+        # Remove unwanted directories that were downloaded (because sub-datasets download everything)
+        remove_unwanted_directories(ds, subject, keep_patterns)
 
         # Organize files into task-specific and STRUCTURAL directories
         organize_files(ds, subject, LOCAL_DATASET_PATH, OUTPUT_BASE_PATH, task_runs)
