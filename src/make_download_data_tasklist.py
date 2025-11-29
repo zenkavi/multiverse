@@ -4,5 +4,5 @@ tasks = ["MOTOR:LR,GAMBLING:LR"]
 with open('download_data_tasklist.txt', 'w') as f:
     for subject in subjects:
         for task in tasks:
-            command = f"python download_data.py --subjects {subject} --tasks {task}:LR --dataset-path /hopper/groups/enkavilab/data/hcp --output-path /hopper/groups/enkavilab/users/zenkavi/hcp_multi_pipelines/data/original\n"
+            command = f"python download_data.py --subjects {subject} --tasks {task} --dataset-path /hopper/groups/enkavilab/data/hcp --output-path /hopper/groups/enkavilab/users/zenkavi/hcp_multi_pipelines/data/original\n"
             f.write(command)
