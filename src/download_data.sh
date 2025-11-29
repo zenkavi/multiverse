@@ -10,6 +10,7 @@
 #SBATCH --mail-user=zenkavi@cmc.edu
 #SBATCH --mail-type=FAIL
 
+conda init
 conda activate datalad_env
 
 # Get the specific command for this array task
