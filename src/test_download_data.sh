@@ -8,7 +8,7 @@
 #SBATCH --time=01:00:00
 #SBATCH --array=1-2%2
 #SBATCH --mail-user=zenkavi@cmc.edu
-#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH --mail-type=FAIL
 
 conda activate datalad_env
 
