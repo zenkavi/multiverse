@@ -412,9 +412,9 @@ Examples:
         ]
 
     # Always download structural data
-    data_specs["T1w_MPR1"] = [
-        "T1w_MPR1/*_3T_T1w_MPR1.nii.gz"
-    ]
+    # data_specs["T1w_MPR1"] = [
+    #     "T1w_MPR1/*_3T_T1w_MPR1.nii.gz"
+    # ]
 
     # Setup dataset once
     logger.info("Setting up HCP dataset")
