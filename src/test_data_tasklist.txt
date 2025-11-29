@@ -1,2 +1,0 @@
-python download_data.py --subjects 110613 --tasks MOTOR:LR --dataset-path /hopper/groups/enkavilab/data/hcp --output-path /hopper/groups/enkavilab/users/zenkavi/hcp_multi_pipelines/data/original
-python download_data.py --subjects 110613 --tasks GAMBLING:LR --dataset-path /hopper/groups/enkavilab/data/hcp --output-path /hopper/groups/enkavilab/users/zenkavi/hcp_multi_pipelines/data/original

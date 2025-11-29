@@ -6,7 +6,7 @@
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=4
 #SBATCH --time=01:00:00
-#SBATCH --array=1-100%20
+#SBATCH --array=1-50%25
 #SBATCH --mail-user=zenkavi@cmc.edu
 #SBATCH --mail-type=FAIL
 

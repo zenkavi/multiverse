@@ -437,7 +437,7 @@ Examples:
         organize_files(ds, subject, LOCAL_DATASET_PATH, OUTPUT_BASE_PATH, task_runs)
 
         # Clean up downloaded files from dataset path to save space
-        # cleanup_dataset_files(ds, subject, task_runs)
+        cleanup_dataset_files(ds, subject, task_runs)
 
     logger.info("All downloads and organization completed")
 
