@@ -7,7 +7,7 @@ fwhms = [5, 8]
 motions = [0, 6, 24]
 hrfs = ['derivatives', 'no_derivatives']
 
-with open('fsl_pipeplines_tasklist.txt', 'w') as f:
+with open('fsl_pipelines_tasklist.txt', 'w') as f:
     for SUBNUM in subjects:
         for TASK in tasks:
             CONTRASTS = task_contrasts[TASK]
