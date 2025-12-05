@@ -7,7 +7,7 @@ fwhms = [5, 8]
 motions = [0, 6, 24]
 hrfs = ['derivatives', 'no_derivatives']
 
-with open('fsl_pipelines_tasklist.txt', 'w') as f:
+with open('fsl_preprocess_tasklist.txt', 'w') as f:
     for SUBNUM in subjects:
         for TASK in tasks:
             CONTRASTS = task_contrasts[TASK]
@@ -15,7 +15,29 @@ with open('fsl_pipelines_tasklist.txt', 'w') as f:
                 for MOTION in motions:
                     for HRF in hrfs:
                         contrasts_str = json.dumps(CONTRASTS)  # This gives you ["item1", "item2", ...]
-                        command = f"singularity exec --bind /hopper/groups/enkavilab/users/zenkavi/hcp_multi_pipelines:/srv/tempdd/egermani/hcp_pipelines/ --pwd /srv/tempdd/egermani/hcp_pipelines/src /hopper/groups/enkavilab/singularity_images/open_pipeline_latest.sif python run_pipeline.py -e /srv/tempdd/egermani/hcp_pipelines/data/original -r /srv/tempdd/egermani/hcp_pipelines/data/derived -s '[\"{SUBNUM}\"]' -o '[\"preprocessing\", \"l1\", \"registration\"]' -S \"fsl\" -t '[\"{TASK}\"]' -c '{contrasts_str}' -f {FWHM} -p {MOTION} -h \"{HRF}\"\n"
+                        command = f"singularity exec --bind /hopper/groups/enkavilab/users/zenkavi/hcp_multi_pipelines:/srv/tempdd/egermani/hcp_pipelines/ --pwd /srv/tempdd/egermani/hcp_pipelines/src /hopper/groups/enkavilab/singularity_images/open_pipeline_latest.sif python run_pipeline.py -e /srv/tempdd/egermani/hcp_pipelines/data/original -r /srv/tempdd/egermani/hcp_pipelines/data/derived -s '[\"{SUBNUM}\"]' -o '[\"preprocessing\"]' -S \"fsl\" -t '[\"{TASK}\"]' -c '{contrasts_str}' -f {FWHM} -p {MOTION} -h \"{HRF}\"\n"
+                        f.write(command)
+
+with open('fsl_l1_tasklist.txt', 'w') as f:
+    for SUBNUM in subjects:
+        for TASK in tasks:
+            CONTRASTS = task_contrasts[TASK]
+            for FWHM in fwhms:
+                for MOTION in motions:
+                    for HRF in hrfs:
+                        contrasts_str = json.dumps(CONTRASTS)  # This gives you ["item1", "item2", ...]
+                        command = f"singularity exec --bind /hopper/groups/enkavilab/users/zenkavi/hcp_multi_pipelines:/srv/tempdd/egermani/hcp_pipelines/ --pwd /srv/tempdd/egermani/hcp_pipelines/src /hopper/groups/enkavilab/singularity_images/open_pipeline_latest.sif python run_pipeline.py -e /srv/tempdd/egermani/hcp_pipelines/data/original -r /srv/tempdd/egermani/hcp_pipelines/data/derived -s '[\"{SUBNUM}\"]' -o '[\"l1\"]' -S \"fsl\" -t '[\"{TASK}\"]' -c '{contrasts_str}' -f {FWHM} -p {MOTION} -h \"{HRF}\"\n"
+                        f.write(command)
+
+with open('fsl_registration_tasklist.txt', 'w') as f:
+    for SUBNUM in subjects:
+        for TASK in tasks:
+            CONTRASTS = task_contrasts[TASK]
+            for FWHM in fwhms:
+                for MOTION in motions:
+                    for HRF in hrfs:
+                        contrasts_str = json.dumps(CONTRASTS)  # This gives you ["item1", "item2", ...]
+                        command = f"singularity exec --bind /hopper/groups/enkavilab/users/zenkavi/hcp_multi_pipelines:/srv/tempdd/egermani/hcp_pipelines/ --pwd /srv/tempdd/egermani/hcp_pipelines/src /hopper/groups/enkavilab/singularity_images/open_pipeline_latest.sif python run_pipeline.py -e /srv/tempdd/egermani/hcp_pipelines/data/original -r /srv/tempdd/egermani/hcp_pipelines/data/derived -s '[\"{SUBNUM}\"]' -o '[\"registration\"]' -S \"fsl\" -t '[\"{TASK}\"]' -c '{contrasts_str}' -f {FWHM} -p {MOTION} -h \"{HRF}\"\n"
                         f.write(command)
 
 
