@@ -13,11 +13,11 @@ mkdir -p logs
 
 main_script=/hopper/groups/enkavilab/users/zenkavi/multiverse/src/preprocessing_jobs/MOTOR/p1_MOTOR_preprocessing.sh
 
-
 CONTAINER=/hopper/groups/enkavilab/singularity_images/open_pipeline_latest.sif
 
 # Run everything inside the Singularity container
 singularity exec \
     --bind /hopper/groups/enkavilab/users/zenkavi/hcp_multi_pipelines:/srv/tempdd/egermani/hcp_pipelines/ \
+    --bind /hopper/groups/enkavilab/users/zenkavi/multiverse:/hopper/groups/enkavilab/users/zenkavi/multiverse \
     $CONTAINER \
     $main_script
