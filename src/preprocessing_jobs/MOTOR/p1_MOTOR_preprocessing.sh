@@ -19,5 +19,5 @@ source /opt/miniconda-latest/etc/profile.d/conda.sh
 source /opt/miniconda-latest/bin/activate
 conda activate neuro
 
-python3 $main_script -e $e -r $r -s $s -o $o -S $S -t $t -c $c -f $f -p $p -h $hrf
-# python3 $main_script -e "$e" -r "$r" -s '$s' -o '$o' -S "$S" -t '$t' -c '$c' -f $f -p $p -h "$hrf"
+# python3 $main_script -e $e -r $r -s $s -o $o -S $S -t $t -c $c -f $f -p $p -h $hrf
+python3 $main_script -e "$e" -r "$r" -s '$s' -o '$o' -S "$S" -t '$t' -c '$c' -f $f -p $p -h "$hrf"
