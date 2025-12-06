@@ -1,15 +1,4 @@
 #!/bin/bash
-#SBATCH --job-name=p1_MOTOR_preprocessing
-#SBATCH --output=logs/p1_MOTOR_preprocessing_%J.out
-#SBATCH --error=logs/p1_MOTOR_preprocessing_%J.err
-#SBATCH --time=12:00:00
-#SBATCH --mem=16G
-#SBATCH --cpus-per-task=16
-#SBATCH --mail-user=zenkavi@cmc.edu
-#SBATCH --mail-type=FAIL
-
-# Create logs directory if it doesn't exist
-mkdir -p logs
 
 # Define your parameters
 e=/srv/tempdd/egermani/hcp_pipelines/data/original
@@ -26,20 +15,8 @@ f=5
 # main_script=/hopper/groups/enkavilab/users/zenkavi/hcp_multi_pipelines/src/run_pipeline.py
 main_script=/srv/tempdd/egermani/hcp_pipelines/src/run_pipeline.py
 
-# Path to Singularity container
-CONTAINER=/hopper/groups/enkavilab/singularity_images/open_pipeline_latest.sif
+source /opt/miniconda-latest/etc/profile.d/conda.sh
+source /opt/miniconda-latest/bin/activate
+conda activate neuro
 
-# Get which subject to run
-# s_values need to be parsed as an array for this to work, the above string wouldn't work directly
-# s=${s_values[$SLURM_ARRAY_TASK_ID]}
-
-# Run everything inside the Singularity container
-singularity exec \
-    --bind /hopper/groups/enkavilab/users/zenkavi/hcp_multi_pipelines:/srv/tempdd/egermani/hcp_pipelines/ \
-    $CONTAINER \
-    bash -c "
-        source /opt/miniconda-latest/etc/profile.d/conda.sh
-        source /opt/miniconda-latest/bin/activate
-        conda activate neuro
-        python3 $main_script -e $e -r $r -s '$s' -o '$o' -S $S -t '$t' -c '$c' -f $f -p $p -h $hrf
-    "
+python3 $main_script -e $e -r $r -s $s -o $o -S $S -t $t -c $c -f $f -p $p -h $hrf
