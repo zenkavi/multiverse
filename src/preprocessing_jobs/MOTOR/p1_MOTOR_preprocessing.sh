@@ -12,12 +12,11 @@ hrf='derivatives'
 p=0
 f=5
 
-# main_script=/hopper/groups/enkavilab/users/zenkavi/hcp_multi_pipelines/src/run_pipeline.py
 main_script=/srv/tempdd/egermani/hcp_pipelines/src/run_pipeline.py
 
 source /opt/miniconda-latest/etc/profile.d/conda.sh
 source /opt/miniconda-latest/bin/activate
 conda activate neuro
 
-# python3 $main_script -e $e -r $r -s $s -o $o -S $S -t $t -c $c -f $f -p $p -h $hrf
-python3 $main_script -e "$e" -r "$r" -s '$s' -o '$o' -S "$S" -t '$t' -c '$c' -f $f -p $p -h "$hrf"
+# Use double quotes around JSON variables to preserve them
+python3 $main_script -e "$e" -r "$r" -s "$s" -o "$o" -S "$S" -t "$t" -c "$c" -f $f -p $p -h "$hrf"
